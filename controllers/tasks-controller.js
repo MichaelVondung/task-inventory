@@ -6,7 +6,6 @@ const mongoose = require('mongoose'),
 module.exports = {
     showAllTasks: (req, res) => {
         Task.find({})
-
             .exec()
             .then((tasks) => {
                 res.render('tasks', { tasks: tasks });
@@ -43,7 +42,7 @@ module.exports = {
                 console.log('All tasks were deleted from the database');
             })
             .catch((error) => {
-                console.log(`Error deleting all tasks: ${error.message}`);
+                console.error(`Error deleting all tasks: ${error.message}`);
             });
     },
     redirectView: (req, res) => {
