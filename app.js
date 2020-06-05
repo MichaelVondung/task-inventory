@@ -1,10 +1,10 @@
 // Basic task inventory manager
 // Starting date: 2020-05-28 12:40:18
 // Based on Get Programming with Node.JS book
-// Updated: 2020-06-03 18:01:20
+// Updated: 2020-06-05 11:50:43
 
-// Todo: Use create for saving new tasks (p.211)
-// Todo: Redirect to task overview after saving (p.211)
+// Done: Todo: Use create for saving new tasks (p.211)
+// Done: Redirect to task overview after saving (p.211)
 // Todo: Wrap tasks into a link with _id so they can be edited/updated later (l. 19.6)
 
 const express = require('express'),
@@ -13,8 +13,8 @@ const express = require('express'),
     mongoose = require('mongoose'),
     homeController = require('./controllers/home-controller'),
     errorController = require('./controllers/error-controller'),
-    tasksController = require('./controllers/tasks-controller')
-    router = express.Router();
+    tasksController = require('./controllers/tasks-controller');
+router = express.Router();
 
 mongoose.connect('mongodb://localhost:27017/task_inventory', {
     useNewUrlParser: true,
@@ -38,7 +38,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(homeController.logIncomingRequestsToConsole);
-app.use('/', router)
+app.use('/', router);
 
 // routes
 router.get('/', homeController.showIndexPage);
@@ -46,7 +46,7 @@ router.get('/', homeController.showIndexPage);
 // database routes
 router.get('/tasks', tasksController.showAllTasks);
 router.get('/add-task', tasksController.showNewTaskForm);
-router.post('/save-task', tasksController.saveNewTaskToDatabase);
+router.post('/save-task', tasksController.saveNewTaskToDatabase, tasksController.redirectView);
 
 router.get('/delete-all', tasksController.deleteAllTask);
 
