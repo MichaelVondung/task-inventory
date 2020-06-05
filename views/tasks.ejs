@@ -1,0 +1,40 @@
+<!-- This page displays all tasks in the database -->
+
+<h1>This page shows all tasks in the database</h1>
+
+<!-- The if/else doesn't really work when there is no data in the database, but I don't know why not.  2020-05-28 17:49:48 -->
+
+<p> Tasks:
+    <% tasks %>
+</p>
+
+<% 
+if (tasks != []) {
+%>
+
+<% tasks.forEach((element) => {%>
+
+<p id="text-output">
+    <span id="task-name">
+        <%=element.name%>
+    </span><br>
+    <span>
+        priority:
+        <%=element.priority%>
+        - created:
+        <%=element.createdAt.toLocaleDateString() + ' ' + element.createdAt.toLocaleTimeString()%>
+        - modified:
+        <%=element.updatedAt.toLocaleDateString() + ' ' + element.updatedAt.toLocaleTimeString()%>
+    </span>
+</p>
+
+<% }) %>
+
+<% } else { %>
+
+<p>No tasks found</p>
+
+<% } %>
+
+<br>
+<%- include('partials/back-to-home') %> 
