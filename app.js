@@ -8,6 +8,7 @@
 // Done: Wrap tasks into a link with _id so they can be edited/updated later (l. 19.6)
 // Todo: Implement http-override module.
 // Todo: Considering moving task-related views into a tasks folder.
+// Todo: Add res.locals.redirect to tasks-controller for flexible redirects.
 
 const express = require('express'),
     app = express(),
