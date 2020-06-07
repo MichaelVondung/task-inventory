@@ -5,9 +5,13 @@ Notable changes to this learning project will be documented in this file. The fo
 ## [Unreleased]
 ### Added
 - Included a proper CHANGELOG.md file.
+- Made tasks clickable and added an "edit" link in /view/tasks.ejs.
+- Task details can be displayed in a separate view now.
 
 ### Changed
-- Made tasks clickable and added an "edit" link in /view/tasks.ejs.
+- Using a router object for routes/etc. now.
+
+### Fixed
 
 
 ## [0.0.2] - 2020-06-03
@@ -22,4 +26,4 @@ Notable changes to this learning project will be documented in this file. The fo
 
 ## [0.0.1] - 2020-05-28
 ### Added
-- First version of this project, supporting basic web server and database functionality.
+- First version of this project with basic web server and database functionality.
