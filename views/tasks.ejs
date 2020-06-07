@@ -12,19 +12,20 @@
 if (tasks != []) {
 %>
 
-<% tasks.forEach((element) => {%>
+<% tasks.forEach((task) => {%>
 
 <p id="text-output">
     <span id="task-name">
-        <%=element.name%>
+        <a href="<%=`/tasks/${task.id}`%>"><%=task.name%></a>
+        - (<a href="<%=`/tasks/${task.id}/edit` %>">edit</a>)        
     </span><br>
     <span>
         priority:
-        <%=element.priority%>
+        <%=task.priority%>
         - created:
-        <%=element.createdAt.toLocaleDateString() + ' ' + element.createdAt.toLocaleTimeString()%>
+        <%=task.createdAt.toLocaleDateString() + ' ' + task.createdAt.toLocaleTimeString()%>
         - modified:
-        <%=element.updatedAt.toLocaleDateString() + ' ' + element.updatedAt.toLocaleTimeString()%>
+        <%=task.updatedAt.toLocaleDateString() + ' ' + task.updatedAt.toLocaleTimeString()%>
     </span>
 </p>
 
