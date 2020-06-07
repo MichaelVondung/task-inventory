@@ -12,6 +12,7 @@ Notable changes to this learning project will be documented in this file. The fo
 - Using a router object for routes/etc. now.
 
 ### Fixed
+- CSS is now correctly used with views in sub-folders.
 
 
 ## [0.0.2] - 2020-06-03
