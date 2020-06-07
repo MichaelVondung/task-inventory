@@ -45,6 +45,21 @@ module.exports = {
                 console.error(`Error deleting all tasks: ${error.message}`);
             });
     },
+    showDetails: (req, res, next) => {
+        let taskId = req.params.id;
+        Task.findById(taskId)
+            .then((task) => {
+                res.locals.task = task; // the details view has access to this
+                next();
+            })
+            .catch((error) => {
+                console.error(error.message);
+                next();
+            });
+    },
+    showDetailsView: (req, res) => {
+        res.render('show-details');
+    },
     redirectView: (req, res) => {
         res.redirect('tasks');
     },
