@@ -13,10 +13,10 @@ module.exports = {
             .catch((error) => {
                 console.log(error);
                 return [];
-            })
-            .then(() => {
-                console.log('from task-controller.js: showAllTasks completed');
             });
+        // .then(() => {
+        //     console.log('from task-controller.js: showAllTasks completed');
+        // });
     },
     showNewTaskForm: (req, res) => {
         res.render('new-task');
@@ -26,14 +26,16 @@ module.exports = {
             name: req.body.name,
             priority: req.body.priority,
         })
-            .then((result) => {
-                console.log(result);
+            .then((task) => {
+                console.log(task);
+                res.locals.redirect = `/tasks/${task._id}`;
+                res.locals.task = task; // Only needed if I show the details view in the redirect.
+                next();
             })
             .catch((error) => {
-                console.error(error.message);
-                res.send(error.message);
+                console.error(`Error saving new record: ${error.message}`);
+                next(error);
             });
-        next();
     },
     deleteAllTask: (req, res) => {
         Task.remove({})
@@ -60,7 +62,48 @@ module.exports = {
     showDetailsView: (req, res) => {
         res.render('show-details');
     },
+    editDetails: (req, res, next) => {
+        let userId = req.params.id;
+        Task.findById(userId)
+            .then((task) => {
+                res.render('edit-task', { task: task });
+            })
+            .catch((error) => {
+                console.error(`Error finding task: ${error.message}`);
+                next(error);
+            });
+    },
+    updateRecord: (req, res, next) => {
+        let userId = req.params.id;
+        let updatedData = {
+            name: req.body.taskName,
+            priority: req.body.taskPriority,
+        };
+        Task.findByIdAndUpdate(userId, { $set: updatedData })
+            .then((task) => {
+                res.locals.redirect = `/tasks/${task._id}`;
+                res.locals.task = task;
+                next();
+            })
+            .catch((error) => {
+                console.error(`Error updating record: ${error.message}`);
+                next(error);
+            });
+    },
+    deleteRecord: (req, res, next) => {
+        let userId = req.params.id;
+        Task.findByIdAndDelete(userId)
+            .then(() => {
+                res.locals.redirect = '/tasks';
+                next();
+            })
+            .catch((error) => {
+                console.error(`Error deleting record: ${error.message}`);
+                next(error);
+            });
+    },
     redirectView: (req, res) => {
-        res.redirect('tasks');
+        let redirectPath = res.locals.redirect;
+        res.redirect(redirectPath);
     },
 };
