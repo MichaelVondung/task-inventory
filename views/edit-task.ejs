@@ -1,0 +1,6 @@
+<form action="/tasks/<%=task._id%>/update?_method=PUT" method="POST">
+    <input type="text" name="taskName" id="" value="<%=task.name%>"><br>
+    <input type="text" name="taskPriority" id="" value="<%=task.priority%>"><br>
+    <textarea name="" id="" cols="30" rows="10" placeholder="currently unused"></textarea>
+    <button type="submit">Update</button>
+</form>
