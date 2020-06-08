@@ -16,8 +16,9 @@ if (tasks != []) {
 
 <p id="text-output">
     <span id="task-name">
-        <a href="<%=`/tasks/${task.id}`%>"><%=task.name%></a>
-        - (<a href="<%=`/tasks/${task.id}/edit` %>">edit</a>)        
+        <a href="<%=`/tasks/${task._id}`%>"><%=task.name%></a>
+        - (<a href="<%=`/tasks/${task._id}/edit` %>">edit</a>) 
+        (<a href="<%=`/tasks/${task._id}/delete?_method=DELETE` %>" onclick="return confirm('Delete this record permanently?')">delete</a>)       
     </span><br>
     <span>
         priority:
