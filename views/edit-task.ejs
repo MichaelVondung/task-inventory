@@ -2,5 +2,11 @@
     <input type="text" name="taskName" id="" value="<%=task.name%>"><br>
     <input type="text" name="taskPriority" id="" value="<%=task.priority%>"><br>
     <textarea name="" id="" cols="30" rows="10" placeholder="currently unused"></textarea>
+    <br>
     <button type="submit">Update</button>
 </form>
+
+<br>
+<%- include('partials/link-delete-task') %> 
+<%- include('partials/link-back-to-list') %>
+<%- include('partials/link-back-to-home') %> 
