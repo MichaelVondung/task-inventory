@@ -1,15 +1,9 @@
 // Basic task inventory manager
 // Starting date: 2020-05-28 12:40:18
 // Based on Get Programming with Node.JS book
-// Updated: 2020-06-07 13:37:47
+// Updated: 2020-06-08 16:52:15
 
-// Done: Todo: Use create for saving new tasks (p.211)
-// Done: Redirect to task overview after saving (p.211)
-// Done: Wrap tasks into a link with _id so they can be edited/updated later (l. 19.6)
-// Todo: Implement http-override module.
 // Todo: Considering moving task-related views into a tasks folder.
-// Todo: Add res.locals.redirect to tasks-controller for flexible redirects.
-// Todo: Add editing/updating and deleting of records.
 // Todo: Document the code better.
 
 const express = require('express'),
