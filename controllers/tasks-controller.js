@@ -4,32 +4,37 @@ const mongoose = require('mongoose'),
     Task = require('../models/task');
 
 module.exports = {
-    showAllTasks: (req, res) => {
+    index: (req, res, next) => {
         Task.find({})
-            .exec()
             .then((tasks) => {
-                res.render('tasks', { tasks: tasks });
+                res.locals.tasks = tasks;
+                next();
+                // res.render('tasks', { tasks: tasks });
             })
             .catch((error) => {
-                console.log(error);
-                return [];
+                console.error(`Error loading all records: ${error.message}`);
+                next(error);
             });
         // .then(() => {
         //     console.log('from task-controller.js: showAllTasks completed');
         // });
     },
-    showNewTaskForm: (req, res) => {
-        res.render('new-task');
+    indexView: (req, res) => {
+        res.render('tasks/index');
     },
-    saveNewTaskToDatabase: (req, res, next) => {
+    new: (req, res) => {
+        res.render('tasks/new');
+    },
+    create: (req, res, next) => {
         Task.create({
             name: req.body.name,
             priority: req.body.priority,
         })
             .then((task) => {
-                console.log(task);
-                res.locals.redirect = `/tasks/${task._id}`;
-                res.locals.task = task; // Only needed if I show the details view in the redirect.
+                /* The two lines below are for redirecting to the details view after creating a new task */
+                // res.locals.redirect = `/tasks/${task._id}`;
+                // res.locals.task = task;
+                res.locals.redirect = '/tasks';
                 next();
             })
             .catch((error) => {
@@ -37,17 +42,8 @@ module.exports = {
                 next(error);
             });
     },
-    deleteAllTask: (req, res) => {
-        Task.remove({})
-            .exec()
-            .then(() => {
-                console.log('All tasks were deleted from the database');
-            })
-            .catch((error) => {
-                console.error(`Error deleting all tasks: ${error.message}`);
-            });
-    },
-    showDetails: (req, res, next) => {
+
+    show: (req, res, next) => {
         let taskId = req.params.id;
         Task.findById(taskId)
             .then((task) => {
@@ -59,21 +55,21 @@ module.exports = {
                 next();
             });
     },
-    showDetailsView: (req, res) => {
-        res.render('show-details');
+    showView: (req, res) => {
+        res.render('tasks/show');
     },
-    editDetails: (req, res, next) => {
+    edit: (req, res) => {
         let userId = req.params.id;
         Task.findById(userId)
             .then((task) => {
-                res.render('edit-task', { task: task });
+                res.render('tasks/edit', { task: task });
             })
             .catch((error) => {
                 console.error(`Error finding task: ${error.message}`);
-                next(error);
+                res.send(`Error finding task: ${error.message}`);
             });
     },
-    updateRecord: (req, res, next) => {
+    update: (req, res, next) => {
         let userId = req.params.id;
         let updatedData = {
             name: req.body.taskName,
@@ -90,7 +86,7 @@ module.exports = {
                 next(error);
             });
     },
-    deleteRecord: (req, res, next) => {
+    delete: (req, res, next) => {
         let userId = req.params.id;
         Task.findByIdAndDelete(userId)
             .then(() => {
@@ -100,6 +96,16 @@ module.exports = {
             .catch((error) => {
                 console.error(`Error deleting record: ${error.message}`);
                 next(error);
+            });
+    },
+    deleteAllTasks: (req, res) => {
+        Task.remove({})
+            .exec()
+            .then(() => {
+                console.log('All tasks were deleted from the database');
+            })
+            .catch((error) => {
+                console.error(`Error deleting all tasks: ${error.message}`);
             });
     },
     redirectView: (req, res) => {
