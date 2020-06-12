@@ -1,10 +1,13 @@
 // Basic task inventory manager
 // Starting date: 2020-05-28 12:40:18
 // Based on Get Programming with Node.JS book
-// Updated: 2020-06-08 16:52:15
 
 // Todo: Considering moving task-related views into a tasks folder.
 // Todo: Document the code better.
+
+const version = '0.0.4-RC';
+const updated = '2020-06-12 13:55:17'
+console.log(`Welcome to Task Inventory v${version}, updated at ${updated}`);
 
 const express = require('express'),
     app = express(),
@@ -19,7 +22,7 @@ const express = require('express'),
 mongoose.connect('mongodb://localhost:27017/task_inventory', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    // useCreateIndex: true,
+    useCreateIndex: true,
     useFindAndModify: false,
 });
 
@@ -46,15 +49,14 @@ router.use(homeController.logIncomingRequestsToConsole);
 router.get('/', homeController.showIndexPage);
 
 // database routes
-router.get('/tasks', tasksController.showAllTasks);
-router.get('/add-task', tasksController.showNewTaskForm);
-router.post('/save-task', tasksController.saveNewTaskToDatabase, tasksController.redirectView);
-router.get('/tasks/:id', tasksController.showDetails, tasksController.showDetailsView);
-router.get('/tasks/:id/edit', tasksController.editDetails);
-router.put('/tasks/:id/update', tasksController.updateRecord, tasksController.redirectView);
-router.delete('/tasks/:id/delete', tasksController.deleteRecord, tasksController.redirectView);
-
-router.get('/delete-all', tasksController.deleteAllTask);
+router.get('/tasks', tasksController.index, tasksController.indexView);
+router.get('/tasks/new', tasksController.new);
+router.post('/tasks/create', tasksController.create, tasksController.redirectView);
+router.get('/tasks/delete-all', tasksController.deleteAllTasks);
+router.get('/tasks/:id', tasksController.show, tasksController.showView);
+router.get('/tasks/:id/edit', tasksController.edit);
+router.put('/tasks/:id/update', tasksController.update, tasksController.redirectView);
+router.delete('/tasks/:id/delete', tasksController.delete, tasksController.redirectView);
 
 router.use(errorController.pageNotFoundError);
 router.use(errorController.internalServerError);
