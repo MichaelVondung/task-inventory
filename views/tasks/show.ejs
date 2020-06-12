@@ -1,0 +1,17 @@
+<!-- created: 2020-06-07 12:32:55 -->
+
+<h1><%= task.name %></h1>
+
+Description: <em>will be supported later</em><br>
+Category: <em>will be supported later</em><br>
+
+Priority: <%= task.priority %> <br><br>
+
+Recorded created: <%= task.createdAt %> <br>
+Recorded updated: <%= task.updatedAt %> <br>
+
+<br>
+<%- include('../partials/link-edit-task') %> 
+<%- include('../partials/link-delete-task') %> 
+<%- include('../partials/link-back-to-list') %>
+<%- include('../partials/link-back-to-home') %> 

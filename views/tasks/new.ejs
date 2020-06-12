@@ -1,0 +1,17 @@
+<!-- This is the form to add a new task to the database -->
+<!-- save-task in the action matches the /save-task POST route -->
+
+<h1>Add new task</h1>
+
+<form action="/tasks/create" method="post">
+    <label for="name">Task</label><br>
+    <input type="text" name="name" placeholder="new task">
+    <br>
+    <label for="priority">Priority (1=high, 9=low)</label><br>
+    <input type="numbrt" name="priority" pattern="[1-9]{1}" placeholder="new task">
+    <br><br>
+    <input type="submit" value="submit" id="button">
+</form>
+
+<br>
+<%- include('../partials/link-back-to-home') %> 
