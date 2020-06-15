@@ -3,9 +3,16 @@
 Notable changes to this learning project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+
+## [0.0.4] - 2020-06-15
+### Added
+- Flash messages that display success and error messages.
+- Two new dependencies: express-session and connect-flash.
+
 ### Changed
 - New file structure: Task related views are in their own folder now.
 - Streamlined the tasks controller and switched to better function names.
+- Updated dependencies.
 
 ## [0.0.3] - 2020-06-08
 ### Added
