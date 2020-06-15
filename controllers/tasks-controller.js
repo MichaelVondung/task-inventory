@@ -35,11 +35,13 @@ module.exports = {
                 // res.locals.redirect = `/tasks/${task._id}`;
                 // res.locals.task = task;
                 res.locals.redirect = '/tasks';
+                req.flash('success', 'New task successfully saved.');
                 next();
             })
             .catch((error) => {
                 console.error(`Error saving new record: ${error.message}`);
-                next(error);
+                req.flash('error', `Error saving task: ${error.message}`);
+                next();
             });
     },
 
@@ -91,11 +93,13 @@ module.exports = {
         Task.findByIdAndDelete(userId)
             .then(() => {
                 res.locals.redirect = '/tasks';
+                req.flash('success', 'Task successfully deleted.')
                 next();
             })
             .catch((error) => {
                 console.error(`Error deleting record: ${error.message}`);
-                next(error);
+                req.flash(`Error deleting task: ${error.message}`)
+                next();
             });
     },
     deleteAllTasks: (req, res) => {

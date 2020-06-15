@@ -5,18 +5,21 @@
 // Todo: Considering moving task-related views into a tasks folder.
 // Todo: Document the code better.
 
-const version = '0.0.4-RC';
-const updated = '2020-06-12 13:55:17'
+const version = '0.0.4';
+const updated = '2020-06-15 13:37:40';
 console.log(`Welcome to Task Inventory v${version}, updated at ${updated}`);
 
 const express = require('express'),
     app = express(),
     layouts = require('express-ejs-layouts'),
     mongoose = require('mongoose'),
+    methodOverride = require('method-override'),
+    expressSession = require('express-session'),
+    // cookieParser = require('cookie-parser'), // no longer needed by express-session
+    connectFlash = require('connect-flash'),
     homeController = require('./controllers/home-controller'),
     errorController = require('./controllers/error-controller'),
     tasksController = require('./controllers/tasks-controller'),
-    methodOverride = require('method-override'),
     router = express.Router();
 
 mongoose.connect('mongodb://localhost:27017/task_inventory', {
@@ -42,6 +45,21 @@ router.use(express.static('public'));
 router.use(express.urlencoded({ extended: true }));
 router.use(express.json());
 router.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
+// router.use(cookieParser('change_this_secret_code'));
+router.use(
+    expressSession({
+        secret: 'change_this_secret_code',
+        cookie: { maxAge: 4000000 },
+        resave: false,
+        saveUninitialized: false,
+    })
+);
+router.use(connectFlash())
+
+router.use((req, res, next) => {
+    res.locals.flashMessages = req.flash();
+    next();
+});
 
 router.use(homeController.logIncomingRequestsToConsole);
 
