@@ -11,16 +11,17 @@ console.log(`Welcome to Task Inventory v${version}, updated at ${updated}`);
 
 const express = require('express'),
     app = express(),
+    router = require('./routes/routes'),
     layouts = require('express-ejs-layouts'),
     mongoose = require('mongoose'),
     methodOverride = require('method-override'),
     expressSession = require('express-session'),
     // cookieParser = require('cookie-parser'), // no longer needed by express-session
-    connectFlash = require('connect-flash'),
-    homeController = require('./controllers/home-controller'),
-    errorController = require('./controllers/error-controller'),
-    tasksController = require('./controllers/tasks-controller'),
-    router = express.Router();
+    connectFlash = require('connect-flash');
+    // homeController = require('./controllers/home-controller'),
+    // errorController = require('./controllers/error-controller'),
+    // tasksController = require('./controllers/tasks-controller');
+    // router = express.Router(); // moved to separate files.
 
 mongoose.connect('mongodb://localhost:27017/task_inventory', {
     useNewUrlParser: true,
@@ -40,13 +41,13 @@ db.once('open', () => {
 app.set('view engine', 'ejs');
 app.set('port', process.env.PORT || 3000);
 
-router.use(layouts);
-router.use(express.static('public'));
-router.use(express.urlencoded({ extended: true }));
-router.use(express.json());
-router.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
+app.use(layouts);
+app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 // router.use(cookieParser('change_this_secret_code'));
-router.use(
+app.use(
     expressSession({
         secret: 'change_this_secret_code',
         cookie: { maxAge: 4000000 },
@@ -54,30 +55,19 @@ router.use(
         saveUninitialized: false,
     })
 );
-router.use(connectFlash())
+app.use(connectFlash())
 
-router.use((req, res, next) => {
+app.use((req, res, next) => {
     res.locals.flashMessages = req.flash();
     next();
 });
 
-router.use(homeController.logIncomingRequestsToConsole);
+// router.use(homeController.logIncomingRequestsToConsole);
 
 // routes
-router.get('/', homeController.showIndexPage);
+// router.get('/', homeController.showIndexPage);
 
 // database routes
-router.get('/tasks', tasksController.index, tasksController.indexView);
-router.get('/tasks/new', tasksController.new);
-router.post('/tasks/create', tasksController.create, tasksController.redirectView);
-router.get('/tasks/delete-all', tasksController.deleteAllTasks);
-router.get('/tasks/:id', tasksController.show, tasksController.showView);
-router.get('/tasks/:id/edit', tasksController.edit);
-router.put('/tasks/:id/update', tasksController.update, tasksController.redirectView);
-router.delete('/tasks/:id/delete', tasksController.delete, tasksController.redirectView);
-
-router.use(errorController.pageNotFoundError);
-router.use(errorController.internalServerError);
 
 app.use('/', router);
 
