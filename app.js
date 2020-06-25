@@ -15,7 +15,8 @@ const express = require('express'),
     mongoose = require('mongoose'),
     methodOverride = require('method-override'),
     expressSession = require('express-session'),
-    connectFlash = require('connect-flash');
+    connectFlash = require('connect-flash'),
+    cors = require('cors');
 
 mongoose.connect('mongodb://localhost:27017/task_inventory', {
     useNewUrlParser: true,
@@ -49,6 +50,8 @@ app.use(
     })
 );
 app.use(connectFlash());
+
+app.use(cors());
 
 app.use((req, res, next) => {
     res.locals.flashMessages = req.flash();
