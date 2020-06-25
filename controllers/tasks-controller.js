@@ -1,7 +1,8 @@
 // This file contains controllers related to managing tasks
 
 const mongoose = require('mongoose'),
-    Task = require('../models/task');
+    Task = require('../models/task'),
+    httpStatus = require('http-status-codes');
 
 module.exports = {
     index: (req, res, next) => {
@@ -93,12 +94,12 @@ module.exports = {
         Task.findByIdAndDelete(userId)
             .then(() => {
                 res.locals.redirect = '/tasks';
-                req.flash('success', 'Task successfully deleted.')
+                req.flash('success', 'Task successfully deleted.');
                 next();
             })
             .catch((error) => {
                 console.error(`Error deleting record: ${error.message}`);
-                req.flash(`Error deleting task: ${error.message}`)
+                req.flash(`Error deleting task: ${error.message}`);
                 next();
             });
     },
@@ -115,5 +116,26 @@ module.exports = {
     redirectView: (req, res) => {
         let redirectPath = res.locals.redirect;
         res.redirect(redirectPath);
+    },
+    respondJSON: (req, res) => {
+        res.json({
+            status: httpStatus.OK,
+            data: res.locals,
+        });
+    },
+    errorJSON: (error, req, res, next) => {
+        let errorObject;
+
+        if (error) {
+            errorObject = {
+                status: httpStatus.INTERNAL_SERVER_ERROR,
+                message: error.message,
+            };
+        } else {
+            errorObject = {
+                status: httpStatus.INTERNAL_SERVER_ERROR,
+                message: 'Unknown error.',
+            };
+        }
     },
 };
